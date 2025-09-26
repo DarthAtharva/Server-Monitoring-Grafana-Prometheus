@@ -39,11 +39,36 @@ server.get("/slow", async (req, res) => {
                 status: "Error",
                 error: "Internal Server Error"
 
-            })
+            });
     }
-})
+});
+
+server.get("/metrics", async (req, res) => {
+
+    try{
+
+        const metrics = await client.register.metrics();
+
+        return res
+            .setHeader("Content-Type", client.register.contentType)
+            .send(metrics);
+        
+
+    }catch{
+
+        return res
+            .status(500)
+            .json({
+
+                status: "Error",
+                error: "Error fetching metrics"
+
+            });
+    }
+
+});
 
 
 server.listen(PORT, () => {
     console.log(`Server running on port: ${PORT}`);
-})
+});
