@@ -1,8 +1,15 @@
 import express from "express";
+import client from "prom-client";
 import { heavyTask } from "./tasks/heavyTask.js";
 
 const server = express();
 const PORT = process.env.PORT || 8000;
+
+//Prometheus client setup
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics({
+    register : client.register
+});
 
 server.get("/", (req, res) => {
     res.send("Hello there!");
